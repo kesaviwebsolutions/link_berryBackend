@@ -1,4 +1,4 @@
-from python_scraper.queryWithUsername import app
+from profileAndAge import app
 
 if __name__ == "__main__":
     app.run()

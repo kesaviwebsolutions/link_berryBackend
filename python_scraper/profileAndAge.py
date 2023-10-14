@@ -25,6 +25,10 @@ def get_driver():
     driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
     return driver
 
+options = webdriver.ChromeOptions()
+options.add_argument('--ignore-ssl-errors=yes')
+options.add_argument('--ignore-certificate-errors')
+
 
 driver = get_driver()
 
