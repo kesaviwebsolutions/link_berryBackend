@@ -18,6 +18,12 @@ app.get("/", async (req, res) => {
 
 app.post("/join", async(req, res)=>{
     try {
+        const { userName } = req.body
+        const isuser = await user.findOne({userName:userName});
+        console.log(isuser)
+        if(isuser){
+            return res.status(500).send("User already exist")
+        }
         const data = new user(req.body)
         await data.save();
         res.send("done")
@@ -30,7 +36,7 @@ app.post("/join/fillinguser", async(req, res)=>{
     try {
         const {username} = req.body
         const data = await user.findOneAndUpdate({userName:username}, req.body);
-        res.status.send("update user")
+        res.send("update user")
     } catch (error) {
         console.log(error)
     }   
@@ -41,6 +47,16 @@ app.post("/join/findcode", async(req, res)=>{
         const { code } = req.body
         const removingfromInviter = await user.findOneAndUpdate({inviteCodes:code},{ $pull: { inviteCodes: code } });
         res.send("removed code")
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post("/user/getuser", async(req, res)=>{
+    try {
+        const { username } = req.body
+        const data = await user.findOne({userName:username});
+        res.send(data)
     } catch (error) {
         console.log(error)
     }
