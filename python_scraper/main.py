@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 app = Flask(__name__)
 
-load_dotenv()  # This loads the variables from .env into the environment
+load_dotenv()  
 
 LINKEDIN_EMAIL = os.environ.get("LINKEDIN_EMAIL")
 LINKEDIN_PASSWORD = os.environ.get("LINKEDIN_PASSWORD")
