@@ -42,6 +42,15 @@ app.post("/join/fillinguser", async(req, res)=>{
     }   
 })
 
+app.get("/users/all", async(req, res)=>{
+    try {
+        const data = await user.find();
+        res.send(data)
+    } catch (error) {
+        console.log(error)
+    }   
+})
+
 app.post("/join/findcode", async(req, res)=>{
     try {
         const { code } = req.body
@@ -57,6 +66,26 @@ app.post("/user/getuser", async(req, res)=>{
         const { username } = req.body
         const data = await user.findOne({userName:username});
         res.send(data)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post("/user/buy/holdings", async(req, res)=>{
+    try {
+        const { myusername, boughtusername, units } = req.body
+        const hodlingdata = await user.findOneAndUpdate({userName:myusername}, {$push : {holdings: {user:boughtusername, value:units}}});
+        const holdersdata = await user.findOneAndUpdate({userName:clientusername}, {$push : {holders: {user:myusername, value:units}}});
+        res.send("done")
+    } catch (error) {
+        console.log(error)
+    }
+})
+app.post("/user/buysell/tx", async(req, res)=>{
+    try {
+        const { myusername, method, boughtusername, units } = req.body
+        const hodlingdata = await user.findOneAndUpdate({userName:myusername},{$push : {userTx: {user:boughtusername, value:units, method:method}}});
+        res.send("done")
     } catch (error) {
         console.log(error)
     }

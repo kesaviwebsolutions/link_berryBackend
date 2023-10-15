@@ -17,6 +17,10 @@ const Super_Admin = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  profileImage:{
+    type: String,
+    required: false,
+  },
   joinAt:{
     type: Number,
     required: false,
@@ -35,6 +39,10 @@ const Super_Admin = new mongoose.Schema({
   },
   walletKey:{
     type: String,
+    required: false,
+  },
+  userTx:{
+    type: Array,
     required: false,
   },
   holders:{
