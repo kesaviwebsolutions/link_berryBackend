@@ -76,7 +76,7 @@ app.post("/user/buy/holdings", async(req, res)=>{
     try {
         const { myusername, boughtusername, units } = req.body
         const hodlingdata = await user.findOneAndUpdate({userName:myusername}, {$push : {holdings: {user:boughtusername, value:units}}});
-        const holdersdata = await user.findOneAndUpdate({userName:clientusername}, {$push : {holders: {user:myusername, value:units}}});
+        const holdersdata = await user.findOneAndUpdate({userName:boughtusername}, {$push : {holders: {user:myusername, value:units}}});
         res.send("done")
     } catch (error) {
         console.log(error)
