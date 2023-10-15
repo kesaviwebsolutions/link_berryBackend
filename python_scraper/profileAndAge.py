@@ -28,9 +28,10 @@ def get_driver():
     driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
     return driver
 
+
 options = webdriver.ChromeOptions()
-options.add_argument('--ignore-ssl-errors=yes')
-options.add_argument('--ignore-certificate-errors')
+options.add_argument("--ignore-ssl-errors=yes")
+options.add_argument("--ignore-certificate-errors")
 
 
 driver = get_driver()
@@ -63,29 +64,25 @@ def get_profile():
         except (TimeoutException, NoSuchElementException):
             profile_image_url = None
 
+        followers = None
+        connections = None
+
         try:
             bullet_items = wait.until(
                 EC.presence_of_all_elements_located(
                     (By.CSS_SELECTOR, ".pv-top-card--list-bullet li")
                 )
             )
-            if len(bullet_items) == 2:
-                followers_elem = bullet_items[0].find_element(
-                    By.CSS_SELECTOR, "span.t-bold"
-                )
-                followers = followers_elem.text
-                connections_elem = bullet_items[1].find_element(
-                    By.CSS_SELECTOR, "span.t-bold"
-                )
-                connections = connections_elem.text
-            elif len(bullet_items) == 1:
-                followers = None
-                connections_elem = bullet_items[0].find_element(
-                    By.CSS_SELECTOR, "span.t-bold"
-                )
-                connections = connections_elem.text
+
+            for item in bullet_items:
+                item_text = item.text
+                if "follower" in item_text:
+                    followers = re.search(r"\d+", item_text).group(0)
+                elif "connection" in item_text:
+                    connections = re.search(r"\d+", item_text).group(0)
+
         except (TimeoutException, NoSuchElementException):
-            followers = None
+            pass
 
         profile_data = {
             "username": username,
