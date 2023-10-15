@@ -35,6 +35,7 @@ app.post("/join", async(req, res)=>{
 app.post("/join/fillinguser", async(req, res)=>{
     try {
         const {username} = req.body
+        console.log("User", username)
         const data = await user.findOneAndUpdate({userName:username}, req.body);
         res.send("update user")
     } catch (error) {
